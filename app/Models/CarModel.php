@@ -6,11 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class CarBrand extends Model
+class CarModel extends Model
 {
     use HasFactory, softDeletes;
-    protected $table = 'car_brands';
-    public function getCarModel(){
-        return $this->hasMany(CarModel::class, 'brand_id','id');
+    protected $table = 'car_models';
+
+    public function getCarBrand(){
+        return $this->belongsTo(CarBrand::class, 'brand_id','id');
     }
 }
