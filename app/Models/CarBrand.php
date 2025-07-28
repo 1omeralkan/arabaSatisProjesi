@@ -10,7 +10,7 @@ class CarBrand extends Model
 {
     use HasFactory, softDeletes;
     protected $table = 'car_brands';
-    public function getCarModel(){
+    public function carModels (){
         return $this->hasMany(CarModel::class, 'brand_id','id');
     }
 }
