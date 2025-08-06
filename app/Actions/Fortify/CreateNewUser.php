@@ -19,17 +19,28 @@ class CreateNewUser implements CreatesNewUsers
      */
     public function create(array $input): User
     {
+
         Validator::make($input, [
             'name' => ['required', 'string', 'max:255'],
+            'surname' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => $this->passwordRules(),
             'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['accepted', 'required'] : '',
         ])->validate();
 
-        return User::create([
-            'name' => $input['name'],
-            'email' => $input['email'],
-            'password' => Hash::make($input['password']),
-        ]);
+        //Referans kodu kontrolü,Doğru olan kod CODE23
+        if ($input['referans']=== 'CODE23'){
+            return User::create([
+                'name' => $input['name'],
+                'surname'=>$input['surname'],
+                'email' => $input['email'],
+                'password' => Hash::make($input['password']),
+            ]);
+
+        }else  {
+           abort(403, 'Unauthorized action.');
+        }
+
+
     }
 }

@@ -15,17 +15,11 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::create([
-            'name' => 'Test User',
-            'surname' => 'Testoğlu', // ← EKLE BUNU
-            'email' => 'test@example.com',
-            'role' => '1', // ← varsa role da zorunluysa ekle
-            'password' => bcrypt('123456789'),
-        ]);
 
 
         $this->call([
             CityTownSeeder::class,
+            CarBrandSeeder01::class,
         ]);
 
 
