@@ -30,6 +30,11 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
 
 Route::group(['prefix'=>'/admin','middleware'=>'isAdmin'], function () {
     Route::get('/dashboard',[AdminController::class,'index'])->name('adminDashboard');
+    Route::get('/kullanicilar',[\App\Http\Controllers\Admin\UserController::class,'index'])->name('kullanicilar');
+    Route::get('delete/{id}',[\App\Http\Controllers\Admin\UserController::class,'delete'])->name('delete');
+    Route::post('/kullanici/rol-guncelle', [\App\Http\Controllers\Admin\UserController::class, 'rolGuncelle'])->name('kullanici.rolGuncelle');
+
+
 
     //arabaMarkaRotaları
     Route::group(['prefix'=>'carBrand'], function () {

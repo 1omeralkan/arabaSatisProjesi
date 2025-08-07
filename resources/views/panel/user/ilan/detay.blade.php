@@ -10,6 +10,9 @@
                 @foreach($ilan as $i)
                     <div class="row mb-3">
                         <div class="col-md-6 mb-2">
+                            <strong>İlan Sahibi:</strong> <span class="text-dark">{{ $i->user->name.' '.$i->user->surname  ?? 'Yok' }}</span>
+                        </div>
+                        <div class="col-md-6 mb-2">
                             <strong>Model:</strong> <span class="text-dark">{{ $i->model->name ?? 'Yok' }}</span>
                         </div>
                         <div class="col-md-6 mb-2">
