@@ -1,8 +1,7 @@
 <?php
 
-use App\Http\Controllers\AdminController;
+use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\UserController;
-use App\Http\Middleware\isAuth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
