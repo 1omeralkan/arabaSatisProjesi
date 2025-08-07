@@ -73,6 +73,8 @@ Route::group(['prefix'=>'user'],function(){
         Route::get('/update/{id}',[UserController::class,'arabaIlanUpdate'])->name('user.arabaIlan.update');
         Route::post('/update',[UserController::class,'arabaIlanEdit'])->name('user.arabaIlan.Edit');
         Route::get('/delete/{id}',[UserController::class,'arabaIlanDelete'])->name('user.arabaIlan.delete');
+        Route::get('/detay/{id}', [UserController::class, 'arabaIlanDetay'])->name('user.arabaIlan.detay');
+
 
 
 

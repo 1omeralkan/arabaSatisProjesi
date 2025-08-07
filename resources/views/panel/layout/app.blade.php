@@ -144,7 +144,14 @@
             <ul class="menu-inner py-1">
                 <!-- Dashboard -->
 
-                @if(in_array(auth()->user()->role,[0,1]))
+                <li class="menu-item">
+                    <a href="{{route('user.arabaIlan.index')}}" class="menu-link">
+                        <i class="menu-icon tf-icons bx bx-car"></i>
+                        <div data-i18n="Basic">Arabalar</div>
+                    </a>
+                </li>
+
+                @if(in_array(auth()->user()->role,[1]))
 
                     <li class="menu-item">
                         <a href="{{route('admin.carBrand.index')}}" class="menu-link">
@@ -159,15 +166,21 @@
                         </a>
                     </li>
 
+                    <li class="menu-item">
+                        <a href="" class="menu-link">
+                            <i class="menu-icon tf-icons bx bx-code"></i>
+                            <div data-i18n="Basic">Kullanıcı Yönetimi</div>
+                        </a>
+                    </li>
+
+
                 @endif
 
 
-                <li class="menu-item">
-                    <a href="{{route('user.arabaIlan.index')}}" class="menu-link">
-                        <i class="menu-icon tf-icons bx bx-car"></i>
-                        <div data-i18n="Basic">Arabalar</div>
-                    </a>
-                </li>
+
+
+
+
 
             </ul>
         </aside>
@@ -186,6 +199,11 @@
                         <i class="bx bx-menu bx-sm"></i>
                     </a>
                 </div>
+
+                <form action="{{route('logout')}}" method="POST" class="ms-auto">
+                    @csrf
+                    <button class="form-control btn btn-danger mt-2 ">Çıkış Yap</button>
+                </form>
 
 
             </nav>

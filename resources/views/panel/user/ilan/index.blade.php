@@ -1,6 +1,15 @@
 @extends('panel.layout.app')
 
+<style>
+    .disabled-link {
+        pointer-events: none;
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+</style>
+
 @section('content')
+
 <div>
     <div class="card p-3">
         <h3>İlandaki Arabalar  <a href="{{route('user.arabaIlan.create')}}" class="btn btn-primary float-end">İlan oluştur</a>  </h3>
@@ -88,10 +97,33 @@
                         <td>{{$i->damage->hasar_tarihi}}</td>
 
                         <td>
-                            <a href="" class="btn btn-info">İlan Detay</a>
-                            <a href="{{route('user.arabaIlan.update',$i->id)}}" class="btn btn-success">Güncelle</a>
-                            <a href="{{route('user.arabaIlan.delete',$i->id)}}" class="btn btn-danger">Sil</a>
+                            <a href="{{ route('user.arabaIlan.detay', $i->id) }}" class="btn btn-info">İlan Detay</a>
+
+                            {{-- Güncelle Butonu --}}
+                            @can('update', $i)
+                                <a href="{{ route('user.arabaIlan.update', $i->id) }}" class="btn btn-success mt-2">
+                                    Güncelle
+                                </a>
+                            @else
+                                <a href="javascript:void(0)" class="btn btn-success mt-2 disabled-link">
+                                    Güncelle
+                                </a>
+                            @endcan
+
+                            {{-- Sil Butonu --}}
+                            @can('delete', $i)
+                                <a href="{{ route('user.arabaIlan.delete', $i->id) }}" class="btn btn-danger mt-2 form-control">
+                                    Sil
+                                </a>
+                            @else
+                                <a href="javascript:void(0)" class="btn btn-danger mt-2 disabled-link form-control">
+                                    Sil
+                                </a>
+                            @endcan
                         </td>
+
+
+
                     </tr>
 
                 @endforeach

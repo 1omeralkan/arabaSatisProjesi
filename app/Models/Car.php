@@ -16,4 +16,17 @@ class Car extends Model
     public function town() { return $this->belongsTo(Town::class, 'city_id'); }
     public function media() { return $this->hasMany(MediaGallery::class, 'car_id'); }
 
+    protected static function booted()
+    {
+        static::addGlobalScope('toyota_filter', function ($query) {
+            // Kullanıcı giriş yaptıysa ve role'si 0 ise (Toyota Yetkilisi)
+            if (auth()->check() && auth()->user()->role == 0) {
+                $query->whereHas('model.carBrand', function ($q) {
+                    $q->where('name', 'Toyota');
+                });
+            }
+        });
+    }
+
+
 }

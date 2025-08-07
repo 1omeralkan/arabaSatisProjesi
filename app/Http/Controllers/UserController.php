@@ -10,14 +10,18 @@ use App\Models\City;
 use App\Models\Town;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+
 
 class UserController extends Controller
 {
+    use AuthorizesRequests;
+
 
     //ArabaİlanSTART
 
     public function arabaIlanIndex(){
-        $ilanlar= Car::get();
+        $ilanlar= Car::with(['model.carBrand', 'user', 'damage'])->get();
         $hasarlar=CarDamage::get();
 
         return view('panel.user.ilan.index',compact('ilanlar','hasarlar'));
@@ -75,11 +79,11 @@ class UserController extends Controller
 
         $ilan->save();
 
-        return redirect()->route('user.arabaIlan.index')->with(['success'=>'Marka başarıyla eklendi.']);
+        return redirect()->route('user.arabaIlan.index')->with(['success'=>'İlan başarıyla eklendi.']);
 
     }
     public function arabaIlanUpdate($id){
-        $ilan= Car::find($id);
+        $ilan= Car::findOrFail($id);
         $modeller = CarModel::all();
         $sehir= City::all();
         $ilce=Town::all();
@@ -100,8 +104,10 @@ class UserController extends Controller
             'description'=> 'required|string|max:1000',
         ]);
 
+        $ilan= Car::findOrFail($request->ilan_id);
 
-        $ilan= Car::find($request->ilan_id);
+        $this->authorize('update', $ilan);
+
         $hasar=CarDamage::find($ilan->damage_id);
 
         $hasar->hasar_tarihi=$request->hasar_tarihi;
@@ -134,7 +140,10 @@ class UserController extends Controller
     }
 
     public function arabaIlanDelete($id){
-        $ilan = Car::find($id);
+        $ilan = Car::findOrFail($id);
+
+        $this->authorize('delete', $ilan);
+
 
         if($ilan->deleted_at==null){
             $ilan->delete();
@@ -144,6 +153,16 @@ class UserController extends Controller
             return redirect()->route('user.arabaIlan.index')->with(['errors'=>'Hata oluştu.']);
 
         }
+    }
+
+    public function arabaIlanDetay($id){
+
+
+
+        $ilan = Car::with(['model.carBrand'])->where('id', $id)->get(); // tek kayıt bile olsa collection döner
+
+        return view('panel.user.ilan.detay', compact('ilan'));
+
     }
     //ArabaİlanEND
 }
