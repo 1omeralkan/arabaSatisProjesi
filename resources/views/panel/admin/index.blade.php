@@ -3,7 +3,7 @@
 @section('content')
 
     <div class="card ">
-        <h3 class="p-3 text-center">Kullanıcılar</h3>
+        <h3 class="p-3 text-left">Kullanıcılar</h3>
 
         @if(session('success'))
             <div class="alert alert-success alert-dismissible" role="alert">
@@ -20,7 +20,7 @@
                     <th>#</th>
                     <th>Kullanıcı Adı</th>
                     <th>E-Posta</th>
-                    <th>Rolü</th>
+                    <th>Kayıt Tarihi</th>
                     <th>İşlemler</th>
                 </tr>
                 </thead>
@@ -30,15 +30,7 @@
                         <td>{{$loop->iteration}}</td>
                         <td>{{$u->name. ' '.$u->surname ?? 'Kullanıcı Bulunamadı '}}</td>
                         <td>{{$u->email}}</td>
-                        <td>
-                            @if($u->role==0)
-                                Toyota Yetkilisi
-                            @elseif($u->role==1)
-                                Admin
-                            @else
-                                Satıcı
-                            @endif
-                        </td>
+                        <td>{{$u->created_at}}</td>
                         <td>
                             <div class="d-flex align-items-center gap-2">
                                 <form action="{{route('kullanici.rolGuncelle')}}" method="POST" class="d-flex gap-2">

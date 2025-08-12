@@ -28,5 +28,15 @@ class Car extends Model
         });
     }
 
+    public function scopePublished($query)
+    {
+        return $query->where('status', 1);
+    }
+    public function logs()
+    {
+        return $this->hasMany(CarLog::class);
+    }
+
+
 
 }

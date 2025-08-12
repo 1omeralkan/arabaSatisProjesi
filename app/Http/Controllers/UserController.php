@@ -21,7 +21,7 @@ class UserController extends Controller
     //ArabaİlanSTART
 
     public function arabaIlanIndex(){
-        $ilanlar= Car::with(['model.carBrand', 'user', 'damage'])->get();
+        $ilanlar= Car::published()->with(['model.carBrand', 'user', 'damage'])->get();
         $hasarlar=CarDamage::get();
 
         return view('panel.user.ilan.index',compact('ilanlar','hasarlar'));
@@ -68,7 +68,7 @@ class UserController extends Controller
         $ilan->km=$request->km;
         $ilan->guarantee_status=$request->guarantee_status;
         $ilan->announcement_date = Carbon::now('Europe/Istanbul');
-        $ilan->status=1;
+        $ilan->status=0;
         $ilan->vites_türü=$request->vites_türü;
         $ilan->yakıt_türü=$request->yakıt_türü;
         $ilan->fiyat=$request->fiyat;
@@ -124,7 +124,7 @@ class UserController extends Controller
         $ilan->km=$request->km;
         $ilan->guarantee_status=$request->guarantee_status;
         $ilan->announcement_date = Carbon::now('Europe/Istanbul');
-        $ilan->status=1;
+        $ilan->status=0;
         $ilan->vites_türü=$request->vites_türü;
         $ilan->yakıt_türü=$request->yakıt_türü;
         $ilan->fiyat=$request->fiyat;
@@ -135,7 +135,13 @@ class UserController extends Controller
 
         $ilan->save();
 
-        return redirect()->route('user.arabaIlan.index')->with(['success'=>'İlan başarıyla güncellendi.']);
+        \App\Models\CarLog::create([
+            'car_id' => $ilan->id,
+            'user_id' => auth()->id(),
+            'action' => 'updated',
+        ]);
+
+        return redirect()->route('user.arabaIlan.index')->with(['success'=>'İlan başarıyla güncellendi ve log kaydı oluşturuldu.']);
 
     }
 
@@ -144,10 +150,15 @@ class UserController extends Controller
 
         $this->authorize('delete', $ilan);
 
+        \App\Models\CarLog::create([
+            'car_id' => $ilan->id,
+            'user_id' => auth()->id(),
+            'action' => 'deleted',
+        ]);
 
         if($ilan->deleted_at==null){
             $ilan->delete();
-            return redirect()->route('user.arabaIlan.index')->with(['success'=>'İlan başarıyla silindi.']);
+            return redirect()->route('user.arabaIlan.index')->with(['success'=>'İlan başarıyla silindi ve log kaydı oluşturuldu.']);
 
         }else{
             return redirect()->route('user.arabaIlan.index')->with(['errors'=>'Hata oluştu.']);
@@ -159,7 +170,7 @@ class UserController extends Controller
 
 
 
-        $ilan = Car::with(['model.carBrand'])->where('id', $id)->get(); // tek kayıt bile olsa collection döner
+        $ilan = Car::published()->with(['model.carBrand'])->where('id', $id)->get(); // tek kayıt bile olsa collection döner
 
         return view('panel.user.ilan.detay', compact('ilan'));
 

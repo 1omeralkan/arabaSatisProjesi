@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Car;
 use App\Models\CarBrand;
 use App\Models\CarModel;
+use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
@@ -52,6 +55,8 @@ class AdminController extends Controller
 
     public function carBrandDelete($id){
         $brand = CarBrand::find($id);
+
+
 
         if($brand->deleted_at==null){
             $brand->delete();
@@ -124,7 +129,31 @@ class AdminController extends Controller
     //CarBrandModelEND
 
 
+    public function statistics()
+    {
+        $toplamKullanici = User::count();
+        $toplamIlan = Car::count();
+        $yayindaOlan = Car::where('status', 1)->count();
+        $bekleyen = Car::where('status', 0)->count();
+        $reddedilen = Car::where('status', 2)->count();
+        $bugunEklenen = Car::whereDate('announcement_date', Carbon::today())->count();
 
+        $gunlukIlanlar = Car::selectRaw('DATE(announcement_date) as tarih, COUNT(*) as toplam')
+            ->where('announcement_date', '>=', Carbon::now()->subDays(7))
+            ->groupBy('tarih')
+            ->orderBy('tarih')
+            ->pluck('toplam', 'tarih');
+
+        return view('panel.admin.statistics', compact(
+            'toplamKullanici',
+            'toplamIlan',
+            'yayindaOlan',
+            'bekleyen',
+            'reddedilen',
+            'bugunEklenen',
+            'gunlukIlanlar',
+        ));
+    }
 
 
 

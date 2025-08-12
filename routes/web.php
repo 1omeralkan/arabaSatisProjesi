@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\IlanController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -30,9 +31,17 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
 
 Route::group(['prefix'=>'/admin','middleware'=>'isAdmin'], function () {
     Route::get('/dashboard',[AdminController::class,'index'])->name('adminDashboard');
+    Route::get('/statistics', [AdminController::class, 'statistics'])->name('admin.statistics');
+        Route::get('/ilan-loglari', [\App\Http\Controllers\Admin\CarLogController::class, 'index'])->name('carLogs.index');
+
+
     Route::get('/kullanicilar',[\App\Http\Controllers\Admin\UserController::class,'index'])->name('kullanicilar');
     Route::get('delete/{id}',[\App\Http\Controllers\Admin\UserController::class,'delete'])->name('delete');
     Route::post('/kullanici/rol-guncelle', [\App\Http\Controllers\Admin\UserController::class, 'rolGuncelle'])->name('kullanici.rolGuncelle');
+    Route::get('/ilanlar',[IlanController::class,'index'])->name('ilanlar');
+    Route::put('/ilanlar/{id}/onayla', [\App\Http\Controllers\Admin\IlanController::class, 'onayla'])->name('admin.ilan.onayla');
+    Route::put('/ilanlar/{id}/reddet', [\App\Http\Controllers\Admin\IlanController::class, 'reddet'])->name('admin.ilan.reddet');
+
 
 
 

@@ -147,7 +147,7 @@
                 <li class="menu-item">
                     <a href="{{route('user.arabaIlan.index')}}" class="menu-link">
                         <i class="menu-icon tf-icons bx bx-car"></i>
-                        <div data-i18n="Basic">Arabalar</div>
+                        <div data-i18n="Basic">İlanlar</div>
                     </a>
                 </li>
 
@@ -172,6 +172,28 @@
                             <div data-i18n="Basic">Kullanıcı Yönetimi</div>
                         </a>
                     </li>
+
+                    <li class="menu-item">
+                        <a href="{{route('ilanlar')}}" class="menu-link">
+                            <i class="menu-icon tf-icons bx bx-abacus"></i>
+                            <div data-i18n="Basic">İlan Yönetimi</div>
+                        </a>
+                    </li>
+
+                    <li class="menu-item">
+                        <a href="{{route('admin.statistics')}}" class="menu-link">
+                            <i class="menu-icon tf-icons bx bx-stats"></i>
+                            <div data-i18n="Basic">İstatistikler</div>
+                        </a>
+                    </li>
+
+                    <li class="menu-item">
+                        <a href="{{ route('carLogs.index') }}" class="menu-link">
+                            <i class="menu-icon tf-icons bx bx-history"></i>
+                            <div>İlan Geçmişi</div>
+                        </a>
+                    </li>
+
 
 
                 @endif

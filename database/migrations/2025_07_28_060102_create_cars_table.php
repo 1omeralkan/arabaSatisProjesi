@@ -23,7 +23,7 @@ return new class extends Migration
             $table->tinyInteger('vites_türü')->comment("0-manuel, 1-otomatik, 2-yarıOtomatik");
             $table->tinyInteger('yakıt_türü')->comment("0-benzin, 1-dizel, 2-elektrik, 3-LPG");
             $table->dateTime('announcement_date');
-            $table->tinyInteger('status')->comment("0: Yayında Değil, 1: Yayında, 2: Satıldı");
+            $table->tinyInteger('status')->default(0)->comment("0: Bekliyor, 1: Yayında, 2: Reddedildi");
             $table->integer('fiyat');
             $table->text('description')->nullable();
             $table->softDeletes();
